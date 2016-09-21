@@ -1,0 +1,10 @@
+[package]
+name = "dpkg-deb-rst"
+version = "0.1.0"
+authors = ["Sam Saint-Pettersen <s.stpettersen+github@gmail.com>"]
+
+[dependencies]
+ark = { git = "https://github.com/stpettersens/ark.git" }
+tatar = { git = "https://github.com/stpettersens/tatar.git" }
+clioptions = { git = "https://github.com/stpettersens/clioptions.git" }
+rustc-serialize = "*"
