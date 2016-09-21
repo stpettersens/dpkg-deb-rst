@@ -9,7 +9,9 @@
 
 mod dpkgdeb;
 extern crate clioptions;
+extern crate regex;
 use clioptions::CliOptions;
+use regex::Regex;
 use std::process::exit;
 
 fn display_error(program: &str, err: &str) {
@@ -20,9 +22,12 @@ fn display_error(program: &str, err: &str) {
 fn display_usage(program: &str, code: i32) {
     println!("\nUsage: {} [<option> ...] <command>", program);
     println!("\nStandard commands:");
-    println!("  -b|--build <directory> [<deb>]  Build an archive.");
-    println!("  -c|--contents <deb>             List contents.");
-    println!("  -I|--info <deb>                 Show info to stdout.");
+    println!("  -b|--build <directory> [<deb>]     Build an archive.");
+    println!("  -c|--contents <deb>                List contents.");
+    println!("  -I|--info <deb>                    Show info to stdout.");
+    println!("\nExtended commands:");
+    println!("  -s|--stage <pkg.json>              Stage package structure from JSON file.");
+    println!("  -b|--build <pkg.json>  [<deb>]     Build an archive from JSON file.\n");
     exit(code);
 }
 
@@ -30,22 +35,26 @@ fn main() {
     let cli = CliOptions::new("dpkg-deb-rst");
     let program = cli.get_program();
     
-    if cli.get_num() > 0 {
+    if cli.get_num() > 1 {
         for (i, a) in cli.get_args().iter().enumerate() {
             match a.trim() {
                 "-h" | "--help" => display_usage(&program, 0),
                 "-b" | "--build" => {
-                    let pn1 = cli.next_argument(i);
-                    let pn2 = cli.next_argument(i + 1);
-                    if !pn1.is_empty() || !pn2.is_empty() {
-                        dpkgdeb::build_debian_archive(&pn1, &pn2);
+                    let mut src = cli.next_argument(i);
+                    let pn = cli.next_argument(i + 1);
+                    if !src.is_empty() {
+                        let json = Regex::new(r".json$").unwrap();
+                        if json.is_match(&src) {
+                            src = dpkgdeb::generate_debian_staging_2(&cli.next_argument(i), false);
+                        }
+                        dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
-                        display_error(&program, "FUBAR!");
+                        display_error(&program, "--build needs a <directory/pkg.json> argument");
                     }
                 },
                 "-c" | "--contents" => dpkgdeb::view_contents_archive(&cli.next_argument(i)), 
                 "-I" | "--info" => dpkgdeb::view_info_archive(&cli.next_argument(i)),
-                "-s" | "--stage" => dpkgdeb::generate_debian_staging(&cli.next_argument(i)),
+                "-s" | "--stage" => dpkgdeb::generate_debian_staging_1(&cli.next_argument(i)),
                 _ => continue,
             }
         }

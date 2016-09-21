@@ -7,20 +7,37 @@
   the MIT License; see GPL-LICENSE and MIT-LICENSE.
 */
 
-pub fn build_debian_archive(pn1: &str, pn2: &str) {
-    println!("pn1 = {}", pn1); // TODO Remove this.
-    println!("pn2 = {}", pn2);
+extern crate tatar;
+extern crate ark;
+extern crate rustc_serialize;
+use self::tatar::Tatar;
+use self::ark::Ark;
+use self::rustc_serialize::json::Json;
+
+fn read_ctrl_file(control: &str) -> &str {
+    control
 }
 
-pub fn view_contents_archive(archive: &str) {
+fn create_ctrl_archive (pkg: &str) -> &str {
+    pkg
+}
+
+pub fn build_debian_archive(src: &str, package: &str, verbose: bool) {
 
 }
 
-pub fn view_info_archive(archive: &str) {
+pub fn view_contents_archive(deb: &str) {
 
 }
 
-pub fn generate_debian_staging(arg: &str) {
+pub fn view_info_archive(deb: &str) {
 
 }
 
+pub fn generate_debian_staging_1(json: &str) {
+
+}
+
+pub fn generate_debian_staging_2(json: &str, verbose: bool) -> String {
+    "!TODO".to_owned()
+}

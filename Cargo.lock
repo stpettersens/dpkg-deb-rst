@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
  "ark 0.1.0 (git+https://github.com/stpettersens/ark.git)",
  "clioptions 0.1.0 (git+https://github.com/stpettersens/clioptions.git)",
+ "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "tatar 0.1.0 (git+https://github.com/stpettersens/tatar.git)",
 ]
