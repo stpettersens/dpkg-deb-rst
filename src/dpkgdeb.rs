@@ -14,15 +14,22 @@ use self::tatar::Tatar;
 use self::ark::Ark;
 use self::rustc_serialize::json::Json;
 
+static DELIMITER: char = '_';
+
+struct Package {
+    package: String,
+    version: String,
+}
+
 fn read_ctrl_file(control: &str) -> &str {
     control
 }
 
-fn create_ctrl_archive (pkg: &str) -> &str {
+fn create_ctrl_archive(pkg: &str) -> &str {
     pkg
 }
 
-pub fn build_debian_archive(src: &str, package: &str, verbose: bool) {
+pub fn build_debian_archive(src: &str, pn: &str, verbose: bool) {
 
 }
 

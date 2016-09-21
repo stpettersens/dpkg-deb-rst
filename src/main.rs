@@ -22,12 +22,12 @@ fn display_error(program: &str, err: &str) {
 fn display_usage(program: &str, code: i32) {
     println!("\nUsage: {} [<option> ...] <command>", program);
     println!("\nStandard commands:");
-    println!("  -b|--build <directory> [<deb>]     Build an archive.");
-    println!("  -c|--contents <deb>                List contents.");
-    println!("  -I|--info <deb>                    Show info to stdout.");
+    println!("  -b|--build <directory> [<deb>]  Build an archive.");
+    println!("  -c|--contents <deb>             List contents.");
+    println!("  -I|--info <deb>                 Show info to stdout.");
     println!("\nExtended commands:");
-    println!("  -s|--stage <pkg.json>              Stage package structure from JSON file.");
-    println!("  -b|--build <pkg.json>  [<deb>]     Build an archive from JSON file.\n");
+    println!("  -s|--stage <pkg.json>           Stage package structure from JSON file.");
+    println!("  -b|--build <pkg.json>  [<deb>]  Build an archive from JSON file.\n");
     exit(code);
 }
 
@@ -45,7 +45,7 @@ fn main() {
                     if !src.is_empty() {
                         let json = Regex::new(r".json$").unwrap();
                         if json.is_match(&src) {
-                            src = dpkgdeb::generate_debian_staging_2(&cli.next_argument(i), false);
+                            src = dpkgdeb::generate_debian_staging_2(&src, false);
                         }
                         dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
