@@ -10,31 +10,46 @@
 mod dpkgdeb;
 extern crate clioptions;
 use clioptions::CliOptions;
+use std::process::exit;
 
 fn display_error(program: &str, err: &str) {
-    println!("Error: {}.", err);
-    display_usage(&program, 2);
-}
-
-fn display_version() {
-
+    println!("dpkg-deb-rst: error: {}.", err);
+    display_usage(program, 2);
 }
 
 fn display_usage(program: &str, code: i32) {
-
+    println!("\nUsage: {} [<option> ...] <command>", program);
+    println!("\nStandard commands:");
+    println!("  -b|--build <directory> [<deb>]  Build an archive.");
+    println!("  -c|--contents <deb>             List contents.");
+    println!("  -I|--info <deb>                 Show info to stdout.");
+    exit(code);
 }
 
 fn main() {
     let cli = CliOptions::new("dpkg-deb-rst");
     let program = cli.get_program();
-
-    if cli.get_num() > 1 {
+    
+    if cli.get_num() > 0 {
         for (i, a) in cli.get_args().iter().enumerate() {
             match a.trim() {
                 "-h" | "--help" => display_usage(&program, 0),
-                "-v" | "--version" => display_version(),
+                "-b" | "--build" => {
+                    let pn1 = cli.next_argument(i);
+                    let pn2 = cli.next_argument(i + 1);
+                    if !pn1.is_empty() || !pn2.is_empty() {
+                        dpkgdeb::build_debian_archive(&pn1, &pn2);
+                    } else {
+                        display_error(&program, "FUBAR!");
+                    }
+                },
+                "-c" | "--contents" => dpkgdeb::view_contents_archive(&cli.next_argument(i)), 
+                "-I" | "--info" => dpkgdeb::view_info_archive(&cli.next_argument(i)),
+                "-s" | "--stage" => dpkgdeb::generate_debian_staging(&cli.next_argument(i)),
                 _ => continue,
             }
         }
+    } else {
+        display_error(&program, "need an action operation");
     }
 }
