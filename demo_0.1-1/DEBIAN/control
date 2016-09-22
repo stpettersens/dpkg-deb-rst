@@ -1,0 +1,8 @@
+Package: demo
+Version: 0.1-1
+Section: base
+Priority: optional
+Architecture: all
+Installed-Size: `du -ks opt|cut -f 1`
+Maintainer: Mr. Apt <apt@nowhere.tld>
+Description: A dummy package
