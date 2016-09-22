@@ -50,13 +50,13 @@ fn read_ctrl_file(control: &str) -> Package {
         let l = format!("{}", line.unwrap());
         let mut p = Regex::new(r"Package").unwrap();
         if p.is_match(&l) {
-            let mut split = l.split(": ");
+            let split = l.split(": ");
             let fv: Vec<&str> = split.collect();
             package = fv[1].to_owned();
         }
         p = Regex::new(r"Version").unwrap();
         if p.is_match(&l) {
-            let mut split = l.split(": ");
+            let split = l.split(": ");
             let fv: Vec<&str> = split.collect();
             version = fv[1].to_owned();
         }
