@@ -66,13 +66,13 @@ fn read_ctrl_file(control: &str) -> Package {
 
 fn create_ctrl_archive(pkg: Package) -> Package {
     let rt = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
-    // TODO: Create control.tar.gz using Tatar library here.
+    Tatar::create_single_tar("control.tar.gz", &format!("{}/DEBIAN/control", rt)); // TODO: tar -> tar.gz.
     pkg
 }
 
 fn create_data_archive(pkg: Package) {
     let rt = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
-    // TODO Create data.tar.gz using Tatar library here.
+    Tatar::create_single_tar("data.tar.gz", "opt"); // TODO: tar -> tar.gz.
 }
 
 pub fn build_debian_archive(src: &str, pn: &str, verbose: bool) {
