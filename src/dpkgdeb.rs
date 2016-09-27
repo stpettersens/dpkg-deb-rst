@@ -7,25 +7,29 @@
   the MIT License; see GPL-LICENSE and MIT-LICENSE.
 */
 
-extern crate tatar;
-extern crate ark;
-extern crate regex;
-extern crate rustc_serialize;
-use self::tatar::Tatar;
-use self::ark::Ark;
+use tatar::Tatar;
+use ark::Ark;
 use regex::Regex;
-use self::rustc_serialize::json::Json;
+use rustc_serialize::json;
+use rustc_serialize::json::Json;
 use std::io::{BufRead, BufReader, Write};
+use std::fs;
 use std::fs::File;
 use std::path::Path;
 use std::process::exit;
 
 static DELIMITER: char = '_';
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
 struct Package {
     package: String,
     version: String,
+    section: String,
+    priority: String,
+    architecture: String,
+    maintainer: String,
+    description: String,
+    _files: Vec<String>,
 }
 
 impl Package {
@@ -33,6 +37,12 @@ impl Package {
         Package {
             package: package.to_owned(),
             version: version.to_owned(),
+            section: String::new(),
+            priority: String::new(),
+            architecture: String::new(),
+            maintainer: String::new(),
+            description: String::new(),
+            _files: Vec::new(),
         }
     }
 }
@@ -82,11 +92,16 @@ pub fn build_debian_archive(src: &str, pn: &str, verbose: bool) {
 }
 
 pub fn view_contents_archive(deb: &str) {
-
+    //Ark::unpack_archive(deb);
+    //Tatar::extract_tar("data.tar.gz"); // TODO: tar -> tar.gz.
+    //Tatar::list_tar("data.tar.gz"); // TODO: tar -> tar.gz.
+    // !TODO
+    println!("Not yet implemented.");
 }
 
 pub fn view_info_archive(deb: &str) {
-
+    //Ark::unpack_archive(deb);
+    println!("Not yet implemented.");
 }
 
 pub fn generate_debian_staging_void(json: &str) {
@@ -101,18 +116,29 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
         lines.push(line.unwrap());
     }
     let manifest = Json::from_str(&lines.join("")).unwrap();
-    let mut fields: Vec<String> = Vec::new();
-    let mut files: Vec<String> = Vec::new();
-    for f in manifest.as_object() {
-        for (k, v) in f.iter() {
-            let p = Regex::new(r"_files").unwrap();
-            if p.is_match(&k) {
-                for ff in  v.as_array().unwrap() {
-                    files.push(ff.to_string());
-                }
-            }
-        }
+    let pkg: Package = json::decode(&manifest.to_string()).unwrap();
+
+    if pkg.package.is_empty() || pkg.version.is_empty() || pkg._files[0].is_empty() {
+        println!("At least package name, version and _files must be defined.");
+        exit(2);
     }
-    println!("{:?}", files);
-    "!TODO".to_owned()
+
+    if verbose {
+        println!("dpkg-deb-rst: staging '{}'.", pkg.package);
+    }
+
+    let fpkg = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
+    let dpath = format!("{}/DEBIAN", fpkg);
+    fs::create_dir(fpkg.clone());
+    fs::create_dir(dpath);
+
+    let mut out = Vec::new();
+    for f in pkg._files {
+        let split = f.split(":");
+        let target: Vec<&str> = split.collect();
+        let o = format!("{}/{}", fpkg, target[1]);
+        out.push(o);
+    }
+
+    fpkg
 }

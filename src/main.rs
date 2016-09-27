@@ -9,7 +9,10 @@
 
 mod dpkgdeb;
 extern crate clioptions;
+extern crate tatar;
+extern crate ark;
 extern crate regex;
+extern crate rustc_serialize;
 use clioptions::CliOptions;
 use regex::Regex;
 use std::process::exit;
