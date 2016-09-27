@@ -34,7 +34,7 @@ fn display_usage(program: &str, code: i32) {
 fn main() {
     let cli = CliOptions::new("dpkg-deb-rst");
     let program = cli.get_program();
-    
+
     if cli.get_num() > 1 {
         for (i, a) in cli.get_args().iter().enumerate() {
             match a.trim() {
@@ -45,16 +45,16 @@ fn main() {
                     if !src.is_empty() {
                         let json = Regex::new(r".json$").unwrap();
                         if json.is_match(&src) {
-                            src = dpkgdeb::generate_debian_staging_2(&src, false);
+                            src = dpkgdeb::generate_debian_staging(&src, false);
                         }
                         dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
                         display_error(&program, "--build needs a <directory/pkg.json> argument");
                     }
                 },
-                "-c" | "--contents" => dpkgdeb::view_contents_archive(&cli.next_argument(i)), 
+                "-c" | "--contents" => dpkgdeb::view_contents_archive(&cli.next_argument(i)),
                 "-I" | "--info" => dpkgdeb::view_info_archive(&cli.next_argument(i)),
-                "-s" | "--stage" => dpkgdeb::generate_debian_staging_1(&cli.next_argument(i)),
+                "-s" | "--stage" => dpkgdeb::generate_debian_staging_void(&cli.next_argument(i)),
                 _ => continue,
             }
         }

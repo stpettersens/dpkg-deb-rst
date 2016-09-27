@@ -89,10 +89,30 @@ pub fn view_info_archive(deb: &str) {
 
 }
 
-pub fn generate_debian_staging_1(json: &str) {
-
+pub fn generate_debian_staging_void(json: &str) {
+    generate_debian_staging(json, true);
 }
 
-pub fn generate_debian_staging_2(json: &str, verbose: bool) -> String {
+pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
+    let mut lines = Vec::new();
+    let f = File::open(json).unwrap();
+    let file = BufReader::new(&f);
+    for line in file.lines() {
+        lines.push(line.unwrap());
+    }
+    let manifest = Json::from_str(&lines.join("")).unwrap();
+    let mut fields: Vec<String> = Vec::new();
+    let mut files: Vec<String> = Vec::new();
+    for f in manifest.as_object() {
+        for (k, v) in f.iter() {
+            let p = Regex::new(r"_files").unwrap();
+            if p.is_match(&k) {
+                for ff in  v.as_array().unwrap() {
+                    files.push(ff.to_string());
+                }
+            }
+        }
+    }
+    println!("{:?}", files);
     "!TODO".to_owned()
 }
