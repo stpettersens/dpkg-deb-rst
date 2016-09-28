@@ -132,12 +132,23 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     fs::create_dir(fpkg.clone());
     fs::create_dir(dpath);
 
+    let ctrls: String = json::encode(&pkg).unwrap();
+    let split = ctrls.split(",");
+    let ctrlv: Vec<&str> = split.collect();
+    let mut ctrl = Vec::new();
+    for c in ctrlv {
+        let split = c.split(":");
+        let kv: Vec<&str> = split.collect();
+        ctrl.push(format!("{}: {}", kv[0], kv[1]));
+    }
+
+    println!("{:#?}", ctrl);
+
     let mut out = Vec::new();
     for f in pkg._files {
         let split = f.split(":");
         let target: Vec<&str> = split.collect();
-        let o = format!("{}/{}", fpkg, target[1]);
-        out.push(o);
+        out.push(format!("{}/{}", fpkg, target[1]));
     }
 
     fpkg
