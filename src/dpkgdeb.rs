@@ -147,19 +147,21 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
 
     let fpkg = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
     let dpath = format!("{}/DEBIAN", fpkg);
-    fs::create_dir(fpkg.clone());
-    fs::create_dir(dpath.clone());
+    let _ = fs::create_dir_all(dpath.clone());
 
     let ctrl = create_ctrl_vector(json::encode(&pkg).unwrap());
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
 
-    let mut out = Vec::new();
+    //let mut out = Vec::new();
     for f in pkg._files {
         let split = f.split(":");
         let target: Vec<&str> = split.collect();
-        out.push(format!("{}/{}", fpkg, target[1]));
+        let _ = fs::copy(target[0], format!("{}/{}", fpkg, target[1]));
+        //out.push(format!("{}", target[0]));
+        //out.push(format!("{}/{}", fpkg, target[1]));
     }
-    thread::sleep_ms(3000); // 15000
+    //println!("{:#?}", out);
+    //thread::sleep_ms(3000); // 15000
     fpkg
 }
