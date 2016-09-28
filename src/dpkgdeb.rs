@@ -12,11 +12,14 @@ use ark::Ark;
 use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
+use chrono::duration::Duration;
 use std::io::{BufRead, BufReader, Write};
 use std::fs;
 use std::fs::File;
 use std::path::Path;
 use std::process::exit;
+use std::sync::mpsc::channel;
+use timer;
 
 static DELIMITER: char = '_';
 
@@ -161,5 +164,16 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
         let target: Vec<&str> = split.collect();
         out.push(format!("{}/{}", fpkg, target[1]));
     }
+
+    let timer = timer::Timer::new();
+    let (tx, rx) = channel();
+
+    timer.schedule_with_delay(Duration::seconds(3), move || {
+        tx.send(()).unwrap();
+    });
+
+    rx.recv().unwrap();
+    println!("This code has been executed after 3 seconds.");
+
     fpkg
 }

@@ -13,6 +13,8 @@ extern crate tatar;
 extern crate ark;
 extern crate regex;
 extern crate rustc_serialize;
+extern crate timer;
+extern crate chrono;
 use clioptions::CliOptions;
 use regex::Regex;
 use std::process::exit;
