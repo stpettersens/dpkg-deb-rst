@@ -12,14 +12,12 @@ use ark::Ark;
 use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
-use chrono::duration::Duration;
 use std::io::{BufRead, BufReader, Write};
 use std::fs;
 use std::fs::File;
 use std::path::Path;
+use std::thread;
 use std::process::exit;
-use std::sync::mpsc::channel;
-use timer;
 
 static DELIMITER: char = '_';
 
@@ -78,20 +76,20 @@ fn read_ctrl_file(control: &str) -> Package {
 }
 
 fn create_ctrl_vector(ctrls: String) -> Vec<String> {
-    let split = ctrls.split("{");
-    let ctrlv: Vec<&str> = split.collect();
-    let ctrlss: String = ctrlv.clone().join("").to_owned();
-    let split = ctrlss.split(",");
+    let split = ctrls.split(",");
     let ctrlv: Vec<&str> = split.collect();
     let mut ctrl = Vec::new();
     for c in ctrlv {
-        let p = Regex::new(r"_").unwrap();
-        if !p.is_match(&c) {
-            let split = c.split(":");
-            let kv: Vec<&str> = split.collect();
-            ctrl.push(format!("{}: {}", &kv[0][1..kv[0].len() - 1], &kv[1][1..kv[1].len() - 1]));
+        let p = Regex::new(r"_files").unwrap();
+        if p.is_match(&c) {
+            break;
         }
+        let split = c.split(":");
+        let kv: Vec<&str> = split.collect();
+        ctrl.push(format!("{}{}: {}", &kv[0][1..2].to_uppercase(), 
+        &kv[0][2..kv[0].len() - 1], &kv[1][1..kv[1].len() - 1]));
     }
+    ctrl[0] = format!("P{}", &ctrl[0][2..ctrl[0].len()]);
     ctrl.push("".to_owned());
     ctrl
 }
@@ -109,15 +107,13 @@ fn create_data_archive(pkg: Package) {
 
 pub fn build_debian_archive(src: &str, pn: &str, verbose: bool) {
     let pkg = create_ctrl_archive(read_ctrl_file(&format!("{}/DEBIAN/control", src)));
-    create_data_archive(pkg.clone());
-    println!("{:#?}", pkg); // TODO: Remove this.
+    //create_data_archive(pkg.clone());
 }
 
 pub fn view_contents_archive(deb: &str) {
     //Ark::unpack_archive(deb);
     //Tatar::extract_tar("data.tar.gz"); // TODO: tar -> tar.gz.
     //Tatar::list_tar("data.tar.gz"); // TODO: tar -> tar.gz.
-    // !TODO
     println!("Not yet implemented.");
 }
 
@@ -164,16 +160,6 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
         let target: Vec<&str> = split.collect();
         out.push(format!("{}/{}", fpkg, target[1]));
     }
-
-    let timer = timer::Timer::new();
-    let (tx, rx) = channel();
-
-    timer.schedule_with_delay(Duration::seconds(3), move || {
-        tx.send(()).unwrap();
-    });
-
-    rx.recv().unwrap();
-    println!("This code has been executed after 3 seconds.");
-
+    thread::sleep_ms(3000); // 15000
     fpkg
 }

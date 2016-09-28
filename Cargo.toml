@@ -9,5 +9,3 @@ tatar = { git = "https://github.com/stpettersens/tatar.git" }
 clioptions = { git = "https://github.com/stpettersens/clioptions.git" }
 regex = "0.1.77"
 rustc-serialize = "*"
-timer = "0.1.6"
-chrono = "*"
