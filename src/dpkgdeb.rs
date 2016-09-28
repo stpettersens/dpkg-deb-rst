@@ -74,6 +74,25 @@ fn read_ctrl_file(control: &str) -> Package {
     Package::new(&package, &version)
 }
 
+fn create_ctrl_vector(ctrls: String) -> Vec<String> {
+    let split = ctrls.split("{");
+    let ctrlv: Vec<&str> = split.collect();
+    let ctrlss: String = ctrlv.clone().join("").to_owned();
+    let split = ctrlss.split(",");
+    let ctrlv: Vec<&str> = split.collect();
+    let mut ctrl = Vec::new();
+    for c in ctrlv {
+        let p = Regex::new(r"_").unwrap();
+        if !p.is_match(&c) {
+            let split = c.split(":");
+            let kv: Vec<&str> = split.collect();
+            ctrl.push(format!("{}: {}", &kv[0][1..kv[0].len() - 1], &kv[1][1..kv[1].len() - 1]));
+        }
+    }
+    ctrl.push("".to_owned());
+    ctrl
+}
+
 fn create_ctrl_archive(pkg: Package) -> Package {
     let rt = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
     Tatar::create_single_tar("control.tar.gz", &format!("{}/DEBIAN/control", rt)); // TODO: tar -> tar.gz.
@@ -130,19 +149,11 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     let fpkg = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
     let dpath = format!("{}/DEBIAN", fpkg);
     fs::create_dir(fpkg.clone());
-    fs::create_dir(dpath);
+    fs::create_dir(dpath.clone());
 
-    let ctrls: String = json::encode(&pkg).unwrap();
-    let split = ctrls.split(",");
-    let ctrlv: Vec<&str> = split.collect();
-    let mut ctrl = Vec::new();
-    for c in ctrlv {
-        let split = c.split(":");
-        let kv: Vec<&str> = split.collect();
-        ctrl.push(format!("{}: {}", kv[0], kv[1]));
-    }
-
-    println!("{:#?}", ctrl);
+    let ctrl = create_ctrl_vector(json::encode(&pkg).unwrap());
+    let mut w = File::create(format!("{}/control", dpath)).unwrap();
+    let _ = w.write_all(ctrl.join("\n").as_bytes());
 
     let mut out = Vec::new();
     for f in pkg._files {
@@ -150,6 +161,5 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
         let target: Vec<&str> = split.collect();
         out.push(format!("{}/{}", fpkg, target[1]));
     }
-
     fpkg
 }

@@ -50,7 +50,7 @@ fn main() {
                         if json.is_match(&src) {
                             src = dpkgdeb::generate_debian_staging(&src, false);
                         }
-                        dpkgdeb::build_debian_archive(&src, &pn, true);
+                        // dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
                         display_error(&program, "--build needs a <directory/pkg.json> argument");
                     }
