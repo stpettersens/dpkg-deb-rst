@@ -1,8 +1,8 @@
 ### dpkg-deb-rst
 > :cyclone: dpkg-deb implementation in Rust.
 
-<!--[![Build Status](https://travis-ci.org/stpettersens/dpkg-deb-rst.png?branch=master)](https://travis-ci.org/stpettersens/dpkg-deb-rst)
-[![Build status](https://ci.appveyor.com/api/projects/status/cromct4qxt10o5yb?svg=true)](https://ci.appveyor.com/project/stpettersens/dpkg-deb-js)
+[![Build Status](https://travis-ci.org/stpettersens/dpkg-deb-rst.png?branch=master)](https://travis-ci.org/stpettersens/dpkg-deb-rst)
+<!--[![Build status](https://ci.appveyor.com/api/projects/status/cromct4qxt10o5yb?svg=true)](https://ci.appveyor.com/project/stpettersens/dpkg-deb-rst)
 -->
 <!-- TODO -->
 
