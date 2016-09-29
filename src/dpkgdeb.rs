@@ -105,9 +105,30 @@ fn create_data_archive(pkg: Package) {
     Tatar::create_single_tar("data.tar.gz", "opt"); // TODO: tar -> tar.gz.
 }
 
+fn create_deb_archive(pkg: Package, verbose: bool) -> i32 {
+    let deb = format!("{}{}{}", pkg.package, DELIMITER, pkg.version);
+    let contents = vec!["debian-binary", "control.tar.gz", "data.tar.gz"];
+    if verbose {
+        println!("dpkg-deb-rst: building package '{}' in '{}'.", pkg.package, deb);
+    }
+    let mut w = File::create("debian-binary").unwrap();
+    let _ = w.write_all("2.0\n".as_bytes());
+    //Ark::create_archive(deb, contents);
+    0
+}
+
+fn clean_up() {
+    // TODO.
+}
+
 pub fn build_debian_archive(src: &str, pn: &str, verbose: bool) {
     let pkg = create_ctrl_archive(read_ctrl_file(&format!("{}/DEBIAN/control", src)));
     //create_data_archive(pkg.clone());
+    if create_deb_archive(pkg.clone(), verbose) == 0 {
+        exit(0);
+    } else {
+        exit(2);
+    }
 }
 
 pub fn view_contents_archive(deb: &str) {
@@ -153,15 +174,32 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
 
-    //let mut out = Vec::new();
+    let mut inn = Vec::new();
+    let mut out = Vec::new();
     for f in pkg._files {
         let split = f.split(":");
         let target: Vec<&str> = split.collect();
-        let _ = fs::copy(target[0], format!("{}/{}", fpkg, target[1]));
-        //out.push(format!("{}", target[0]));
-        //out.push(format!("{}/{}", fpkg, target[1]));
+        inn.push(format!("{}", target[0]));
+        out.push(format!("{}/{}", fpkg, target[1]));
     }
-    //println!("{:#?}", out);
-    //thread::sleep_ms(3000); // 15000
+
+    for fd in out.clone() {
+        let split = fd.split("/");
+        let dirs: Vec<&str> = split.collect();
+        let mut fdp = String::new();
+        for (i, d) in dirs.iter().enumerate() {
+            if i == dirs.len() - 1 {
+                break;
+            }
+            fdp = format!("{}/{}", fdp, d);
+        }
+        fdp = format!("{}", &fdp[1..fdp.len()]);
+        let _ = fs::create_dir_all(fdp);
+    }
+
+    for i in 0..inn.len() {
+        let _ = fs::copy(inn[i].clone(), out[i].clone());
+    }
+    thread::sleep_ms(3000);
     fpkg
 }
