@@ -3,5 +3,6 @@ notifications:
 
 sudo: false
 language: rust
+before_script: sudo -y apt-get install tree
 script: "cargo build && target/debug/dpkg-deb-rst -b demo_0.1-1.json"
 after_script: tree
