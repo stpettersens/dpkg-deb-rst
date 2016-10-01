@@ -1,10 +1,11 @@
 install:
     - choco install rust ruby # Install Rust & Ruby.
     - ps: refreshenv
-    - gem install rake # Install Rake.
-    #- rustc --version
+    - gem install os # Install os gem.
+    - ruby --version
+    - rustc --version
     - cargo --version
 
-#test_script:
-    #- rake
-    #- rake test
+test_script:
+    - rake
+    - rake test
