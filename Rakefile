@@ -9,11 +9,11 @@ end
 task :test do
     sh "target/debug/dpkg-deb-rst --build demo_0.1-1.json"
     puts
-    if os.windows then
+    if OS.windows? then
         sh "tree /F #{pkg}"
+        sh "type #{pkg}\\DEBIAN\\control"
     else
         sh "tree #{pkg}"
+        sh "cat #{pkg}/DEBIAN/control"
     end
-    puts
-    sh "cat #{pkg}/DEBIAN/control"
 end
