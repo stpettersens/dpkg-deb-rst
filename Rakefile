@@ -7,7 +7,7 @@ task :default do
 end
 
 task :test do
-    sh "target/debug/dpkg-deb-rst.exe -b demo_0.1-1.json"
+    sh "target/debug/dpkg-deb-rst --build demo_0.1-1.json"
     puts
     if os.windows then
         sh "tree /F #{pkg}"
