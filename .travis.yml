@@ -5,4 +5,4 @@ sudo: required
 language: rust
 before_install: sudo apt-get install tree
 script: "cargo build && target/debug/dpkg-deb-rst -b demo_0.1-1.json"
-after_script: tree demo_from_json_0.1-1
+after_script: "tree demo_from_json_0.1-1 && cat demo_from_json_0.1-1/control"
