@@ -1,0 +1,18 @@
+version: 1.0.{build}
+os:
+    - Visual Studio 2015
+clone_depth: 1
+configuration:
+    - Debug
+platform:
+    - Win32
+    - x64
+environment:
+    matrix:
+        - TOOLCHAIN_VERSION: 14.0
+        - RUST: 1.11.0
+
+        - TOOLCHAIN_VERSION: 14.0
+        - RUST: nightly
+
+build_script: "cargo build && target/debug/dpkg-debug-rst.exe -b demo_0.1-1.json && tree"

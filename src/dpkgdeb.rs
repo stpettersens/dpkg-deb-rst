@@ -89,7 +89,8 @@ fn create_ctrl_vector(ctrls: String) -> Vec<String> {
         ctrl.push(format!("{}{}: {}", &kv[0][1..2].to_uppercase(), 
         &kv[0][2..kv[0].len() - 1], &kv[1][1..kv[1].len() - 1]));
     }
-    ctrl[0] = format!("P{}", &ctrl[0][2..ctrl[0].len()]);
+    ctrl[0] = format!("{}{}", &ctrl[0][1..2].to_uppercase(),
+    &ctrl[0][2..ctrl[0].len()]);
     ctrl.push("".to_owned());
     ctrl
 }
