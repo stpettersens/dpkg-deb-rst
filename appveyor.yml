@@ -1,10 +1,10 @@
 install:
-    - choco install rust # Install Rust.
+    - choco install rust ruby # Install Rust & Ruby.
     - ps: refreshenv
+    - gem install rake # Install Rake.
     #- rustc --version
     - cargo --version
 
 test_script:
-    - cargo build
-    - target\debug\dpkg-deb-rst.exe -b demo_0.1-1.json
-    - tree
+    - rake
+    - rake test
