@@ -3,6 +3,8 @@ notifications:
 
 sudo: required
 language: rust
-before_install: sudo apt-get install tree
+before_install: 
+    - sudo apt-get install tree
+    - sudo gem install os
 script: rake
 after_script: rake test
