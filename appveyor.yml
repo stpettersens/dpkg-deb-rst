@@ -3,8 +3,8 @@ install:
     - ps: refreshenv
     - gem install os # Install os gem.
     - rake --version
-    - rustc --version
-    - cargo --version
+    - where rustc
+    - where cargo
 
 test_script:
     - rake
