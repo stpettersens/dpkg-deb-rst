@@ -1,5 +1,6 @@
 install:
     - choco install rust # Install Rust.
+    - ps: refreshenv
     - rustc --version
     - cargo --version
 
