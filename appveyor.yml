@@ -1,10 +1,10 @@
 install:
     - choco install rust -version 1.10.0 
     #- choco install ruby
-    #- ps: refreshenv
+    - ps: refreshenv
     #- gem install os
     #- rake --version
-    -  where rustc
+    - where rustc
     #- cargo --version
 
 test_script:
