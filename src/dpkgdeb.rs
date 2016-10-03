@@ -176,7 +176,7 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
 
-    println!("dos2unix? -> {}", Dos2Unix::convert(format!("{}/control", dpath), true, true));
+    println!("dos2unix? -> {}", Dos2Unix::convert(&format!("{}/control", dpath), true, true));
 
     let mut inn = Vec::new();
     let mut out = Vec::new();
