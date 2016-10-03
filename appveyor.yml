@@ -5,7 +5,7 @@ install:
     #- gem install os
     #- rake --version
     #- rustc --version
-    - "\"C:\Program Files\Rust stable GNU 1.10\bin\cargo\" --version"
+    - '"C:\Program Files\Rust stable GNU 1.10\bin\cargo" --version'
 
 test_script:
     - rake
