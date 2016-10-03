@@ -2,7 +2,7 @@ install:
     - choco install rust -version 1.10.0 
     #- choco install ruby
     - ps: refreshenv
-    - tree C:\Program Files
+    - tree "C:\Program Files"
     #- gem install os
     #- rake --version
     #- rustc --version
