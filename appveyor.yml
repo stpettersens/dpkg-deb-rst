@@ -1,7 +1,8 @@
 install:
-    - choco install rust ruby # Install Rust & Ruby.
+    - choco install rust -version 1.10.0 
+    - choco install ruby
     - ps: refreshenv
-    - gem install os # Install os gem.
+    - gem install os
     - rake --version
     - rustc --version
     - cargo --version
