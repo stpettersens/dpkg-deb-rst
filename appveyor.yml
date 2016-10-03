@@ -1,10 +1,10 @@
 install:
     - curl -o rust.msi https://static.rust-lang.org/dist/rust-1.12.0-x86_64-pc-windows-gnu.msi
-    - msiexec /package rust.msi
-    #- choco install ruby
+    - start /wait msiexec /package rust.msi /quiet
+    - choco install ruby
     - ps: refreshenv
-    #- gem install os
-    #- rake --version
+    - gem install os
+    - rake --version
     - rustc --version
 
 test_script:
