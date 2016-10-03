@@ -2,9 +2,10 @@ install:
     - choco install rust -version 1.10.0 
     #- choco install ruby
     - ps: refreshenv
+    - type C:\ProgramData\chocolatey\logs\chocolatey.log
     #- gem install os
     #- rake --version
-    - where rustc
+    #- rustc --version
     #- cargo --version
 
 test_script:
