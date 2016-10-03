@@ -9,6 +9,7 @@
 
 use tatar::Tatar;
 use ark::Ark;
+use dos2unix::Dos2Unix;
 use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
@@ -174,6 +175,8 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     let ctrl = create_ctrl_vector(json::encode(&pkg).unwrap());
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
+
+    println!("dos2unix? -> {}", Dos2Unix::convert(format!("{}/control", dpath), true, true));
 
     let mut inn = Vec::new();
     let mut out = Vec::new();

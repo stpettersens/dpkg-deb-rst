@@ -11,6 +11,7 @@ mod dpkgdeb;
 extern crate clioptions;
 extern crate tatar;
 extern crate ark;
+extern crate dos2unix;
 extern crate regex;
 extern crate rustc_serialize;
 use clioptions::CliOptions;

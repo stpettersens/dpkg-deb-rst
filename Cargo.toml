@@ -7,5 +7,6 @@ authors = ["Sam Saint-Pettersen <s.stpettersen+github@gmail.com>"]
 ark = { git = "https://github.com/stpettersens/ark.git" }
 tatar = { git = "https://github.com/stpettersens/tatar.git" }
 clioptions = { git = "https://github.com/stpettersens/clioptions.git" }
+dos2unix = { git = "https://github.com/stpettersens/rust-dos2unix.git" }
 regex = "0.1.77"
 rustc-serialize = "*"
