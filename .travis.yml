@@ -7,5 +7,7 @@ before_install:
     - sudo apt-get install tree
     - sudo apt-get install rubygems
     - sudo gem install os
-script: rake
-after_script: rake test
+script: 
+    - rake
+after_script:
+    - rake test
