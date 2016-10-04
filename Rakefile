@@ -1,4 +1,5 @@
 require 'os'
+require 'FileUtils'
 
 pkg = "demo_from_json_0.1-1"
 
@@ -16,4 +17,10 @@ task :test do
         sh "tree #{pkg}"
         sh "cat #{pkg}/DEBIAN/control"
     end
+end
+
+task :clean do
+    File.delete('control.tar.gz')
+    File.delete('debian-binary')
+    FileUtils.rm_rf("target")
 end

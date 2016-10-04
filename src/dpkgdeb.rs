@@ -13,7 +13,7 @@ use dos2unix::Dos2Unix;
 use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
-use std::io::{BufRead, BufReader, Write};
+use std::io::{BufRead, BufReader, Read, Write};
 use std::fs;
 use std::fs::File;
 use std::path::Path;
@@ -150,13 +150,10 @@ pub fn generate_debian_staging_void(json: &str) {
 }
 
 pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
-    let mut lines = Vec::new();
-    let f = File::open(json).unwrap();
-    let file = BufReader::new(&f);
-    for line in file.lines() {
-        lines.push(line.unwrap());
-    }
-    let manifest = Json::from_str(&lines.join("")).unwrap();
+    let mut lines = String::new();
+    let mut file = File::open(json).unwrap();
+    let _ = file.read_to_string(&mut lines);
+    let manifest = Json::from_str(&lines).unwrap();
     let pkg: Package = json::decode(&manifest.to_string()).unwrap();
 
     if pkg.package.is_empty() || pkg.version.is_empty() || pkg._files[0].is_empty() {
@@ -176,7 +173,7 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
 
-    Dos2Unix::convert(&format!("{}/control", dpath), true);
+    //Dos2Unix::convert(&format!("{}/control", dpath), true);
 
     let mut inn = Vec::new();
     let mut out = Vec::new();
