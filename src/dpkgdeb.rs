@@ -201,7 +201,7 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     }
 
     for o in out {
-        Dos2Unix::convert(&o, true);
+        Dos2Unix::convert(&o, false);
     }
 
     thread::sleep_ms(3000);
