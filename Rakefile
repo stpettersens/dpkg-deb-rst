@@ -1,5 +1,5 @@
 require 'os'
-require 'FileUtils'
+require 'fileutils'
 
 pkg = "demo_from_json_0.1-1"
 
