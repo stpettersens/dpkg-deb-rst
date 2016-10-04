@@ -20,7 +20,8 @@ task :test do
 end
 
 task :clean do
-    File.delete('control.tar.gz')
-    File.delete('debian-binary')
+    File.delete("control.tar.gz")
+    File.delete("debian-binary")
+    FileUtils.rm_rf(pkg)
     FileUtils.rm_rf("target")
 end

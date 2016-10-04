@@ -173,8 +173,6 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
 
-    //Dos2Unix::convert(&format!("{}/control", dpath), true);
-
     let mut inn = Vec::new();
     let mut out = Vec::new();
     for f in pkg._files {
@@ -201,6 +199,11 @@ pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
     for i in 0..inn.len() {
         let _ = fs::copy(inn[i].clone(), out[i].clone());
     }
+
+    for o in out {
+        Dos2Unix::convert(&o, true);
+    }
+
     thread::sleep_ms(3000);
     fpkg
 }
