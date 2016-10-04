@@ -34,7 +34,7 @@ source = "git+https://github.com/stpettersens/clioptions.git#140d7408d8cd7576845
 [[package]]
 name = "dos2unix"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/rust-dos2unix.git#35b79a5bee057d55cc95f7672e5df9e04bea631d"
+source = "git+https://github.com/stpettersens/rust-dos2unix.git#4f17cabc46479b7a93a25e7e26bde9c94c54382a"
 
 [[package]]
 name = "filetime"
