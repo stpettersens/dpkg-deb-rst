@@ -21,7 +21,7 @@ dependencies = [
 [[package]]
 name = "ark"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/ark.git#c8f5ea5e74df4c63b2534adbf23e08d0c014ae78"
+source = "git+https://github.com/stpettersens/ark.git#26848e7c70d5031cfc5469c31366b42e762e8a02"
 dependencies = [
  "filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -34,7 +34,7 @@ source = "git+https://github.com/stpettersens/clioptions.git#140d7408d8cd7576845
 [[package]]
 name = "dos2unix"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/rust-dos2unix.git#26865ad8ebf04f21eece5056fac2cf100f607122"
+source = "git+https://github.com/stpettersens/rust-dos2unix.git#35b79a5bee057d55cc95f7672e5df9e04bea631d"
 
 [[package]]
 name = "filetime"
@@ -91,7 +91,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "tatar"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/tatar.git#aaf3f90b9ea0cc259aefc6e7f702cfb27b26abae"
+source = "git+https://github.com/stpettersens/tatar.git#6822909a4f9a184c6d1db352b7969e5977716222"
 dependencies = [
  "filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
