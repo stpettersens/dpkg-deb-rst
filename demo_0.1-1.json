@@ -3,7 +3,7 @@
   "version": "0.1-1",
   "section": "base",
   "priority": "optional",
-  "architecture": "i386",
+  "architecture": "all",
   "installed_size": "`du -ks opt|cut -f 1`",
   "maintainer": "Mr. Apt <apt@nowhere.tld>",
   "description": "A dummy package",

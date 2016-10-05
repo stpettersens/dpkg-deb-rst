@@ -125,7 +125,7 @@ fn create_ctrl_vector(ctrls: String) -> Vec<String> {
         let split = c.split(":");
         let kv: Vec<&str> = split.collect();
         ctrl.push(format!("{}: {}",
-        &kv[0][1..kv[0].len() - 1].to_string().to_kebab_case(), 
+        &kv[0][1..kv[0].len() - 1].to_string().to_train_case(), 
         &kv[1][1..kv[1].len() - 1]));
     }
     ctrl[0] = format!("{}{}", &ctrl[0][1..2].to_uppercase(), &ctrl[0][2..ctrl[0].len()]);

@@ -10,7 +10,6 @@ end
 task :test do
     puts
     sh "target/release/dpkg-deb-rst --build demo_0.1-1"
-    abort()
     puts
     sh "target/release/dpkg-deb-rst --build demo_0.1-1.json"
     puts
