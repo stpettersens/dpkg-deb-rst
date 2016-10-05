@@ -13,6 +13,7 @@ use dos2unix::Dos2Unix;
 use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
+use inflector::Inflector;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::fs;
 use std::fs::File;
@@ -22,36 +23,51 @@ use std::process::exit;
 
 static DELIMITER: char = '_';
 
-#[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
+#[derive(Clone, RustcDecodable, RustcEncodable)]
 struct Package {
     package: String,
     version: String,
     section: String,
     priority: String,
     architecture: String,
+    installed_size: String,
     maintainer: String,
     description: String,
     _files: Vec<String>,
 }
 
 impl Package {
-    fn new(package: &str, version: &str) -> Package {
+    fn new(package: &str, version: &str, section: &str, priority: &str,
+    architecture: &str, installed_size: &str, maintainer: &str, description: &str) -> Package {
         Package {
             package: package.to_owned(),
             version: version.to_owned(),
-            section: String::new(),
-            priority: String::new(),
-            architecture: String::new(),
-            maintainer: String::new(),
-            description: String::new(),
+            section: section.to_owned(),
+            priority: priority.to_owned(),
+            architecture: architecture.to_owned(),
+            installed_size: installed_size.to_owned(),
+            maintainer: maintainer.to_owned(),
+            description: description.to_owned(),
             _files: Vec::new(),
         }
     }
 }
 
+fn get_field_value(line: &str) -> String {
+    let split = line.split(": ");
+    let fv: Vec<&str> = split.collect();
+    fv[1].to_owned()
+}
+
 fn read_ctrl_file(control: &str) -> Package {
     let mut package = String::new();
     let mut version = String::new();
+    let mut section = String::new();
+    let mut priority = String::new();
+    let mut architecture = String::new();
+    let mut installed_size = String::new();
+    let mut maintainer = String::new();
+    let mut description = String::new();
     if !Path::new(control).exists() {
         println!("Cannot open `control` file to create Debian archive:\n{}", control);
         exit(2)
@@ -62,18 +78,39 @@ fn read_ctrl_file(control: &str) -> Package {
         let l = format!("{}", line.unwrap());
         let mut p = Regex::new(r"Package").unwrap();
         if p.is_match(&l) {
-            let split = l.split(": ");
-            let fv: Vec<&str> = split.collect();
-            package = fv[1].to_owned();
+            package = get_field_value(&l);
         }
         p = Regex::new(r"Version").unwrap();
         if p.is_match(&l) {
-            let split = l.split(": ");
-            let fv: Vec<&str> = split.collect();
-            version = fv[1].to_owned();
+            version = get_field_value(&l);
+        }
+        p = Regex::new(r"Section").unwrap();
+        if p.is_match(&l) {
+            section = get_field_value(&l);
+        }
+        p = Regex::new(r"Priority").unwrap();
+        if p.is_match(&l) {
+            priority = get_field_value(&l);
+        }
+        p = Regex::new(r"Architecture").unwrap();
+        if p.is_match(&l) {
+            architecture = get_field_value(&l);
+        }
+        p = Regex::new(r"Installed-Size").unwrap();
+        if p.is_match(&l) {
+            installed_size = get_field_value(&l);
+        }
+        p = Regex::new(r"Maintainer").unwrap();
+        if p.is_match(&l) {
+            maintainer = get_field_value(&l);
+        }
+        p = Regex::new(r"Description").unwrap();
+        if p.is_match(&l) {
+            description = get_field_value(&l);
         }
     }
-    Package::new(&package, &version)
+    Package::new(&package, &version, &section, &priority,
+    &architecture, &installed_size, &maintainer, &description)
 }
 
 fn create_ctrl_vector(ctrls: String) -> Vec<String> {
@@ -87,11 +124,11 @@ fn create_ctrl_vector(ctrls: String) -> Vec<String> {
         }
         let split = c.split(":");
         let kv: Vec<&str> = split.collect();
-        ctrl.push(format!("{}{}: {}", &kv[0][1..2].to_uppercase(), 
-        &kv[0][2..kv[0].len() - 1], &kv[1][1..kv[1].len() - 1]));
+        ctrl.push(format!("{}: {}",
+        &kv[0][1..kv[0].len() - 1].to_string().to_kebab_case(), 
+        &kv[1][1..kv[1].len() - 1]));
     }
-    ctrl[0] = format!("{}{}", &ctrl[0][1..2].to_uppercase(),
-    &ctrl[0][2..ctrl[0].len()]);
+    ctrl[0] = format!("{}{}", &ctrl[0][1..2].to_uppercase(), &ctrl[0][2..ctrl[0].len()]);
     ctrl.push("".to_owned());
     ctrl
 }
@@ -113,6 +150,7 @@ fn create_deb_archive(pkg: Package, verbose: bool) -> i32 {
     if verbose {
         println!("dpkg-deb-rst: building package '{}' in '{}'.", pkg.package, deb);
     }
+
     let mut w = File::create("debian-binary").unwrap();
     let _ = w.write_all("2.0\n".as_bytes());
     //Ark::create_archive(deb, contents);

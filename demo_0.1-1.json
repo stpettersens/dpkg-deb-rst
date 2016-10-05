@@ -4,6 +4,7 @@
   "section": "base",
   "priority": "optional",
   "architecture": "i386",
+  "installed_size": "`du -ks opt|cut -f 1`",
   "maintainer": "Mr. Apt <apt@nowhere.tld>",
   "description": "A dummy package",
   "_files": [

@@ -14,6 +14,7 @@ extern crate ark;
 extern crate dos2unix;
 extern crate regex;
 extern crate rustc_serialize;
+extern crate inflector;
 use clioptions::CliOptions;
 use regex::Regex;
 use std::process::exit;
