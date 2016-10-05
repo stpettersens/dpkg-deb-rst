@@ -3,6 +3,7 @@ install:
     - rust-nightly-i686-pc-windows-gnu.exe /VERYSILENT /NORESTART /DIR="C:\Program Files (x86)\Rust"
     - SET PATH=%PATH%;C:\Program Files (x86)\Rust\bin
     - gem install os
+    - ruby --version
     - rake --version
     - rustc --version
     - cargo --version
