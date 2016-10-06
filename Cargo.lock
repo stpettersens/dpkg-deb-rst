@@ -14,7 +14,7 @@ dependencies = [
 [[package]]
 name = "Inflector"
 version = "0.4.0"
-source = "git+https://github.com/stpettersens/inflector.git?branch=Train-Case#5fab379375cbb97762e4526c6ab7f7753169e2bb"
+source = "git+https://github.com/stpettersens/inflector.git?branch=Train-Case#f9650222feaf2642286b59101428127bf42b7ead"
 dependencies = [
  "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
