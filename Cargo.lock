@@ -5,7 +5,7 @@ dependencies = [
  "Inflector 0.4.0 (git+https://github.com/stpettersens/inflector.git?branch=Train-Case)",
  "ark 0.1.0 (git+https://github.com/stpettersens/ark.git)",
  "clioptions 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "dos2unix 0.1.0 (git+https://github.com/stpettersens/rust-dos2unix.git)",
+ "dos2unix 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "tatar 0.1.0 (git+https://github.com/stpettersens/tatar.git)",
@@ -44,7 +44,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "dos2unix"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/rust-dos2unix.git#4f17cabc46479b7a93a25e7e26bde9c94c54382a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "filetime"
@@ -149,7 +149,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum aho-corasick 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)" = "ca972c2ea5f742bfce5687b9aef75506a764f61d37f8f649047846a9686ddb66"
 "checksum ark 0.1.0 (git+https://github.com/stpettersens/ark.git)" = "<none>"
 "checksum clioptions 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f5fd8e2ad4a0873b937bc7a249b4141c33ef9a50f93b1fc1c08844cd52b7b087"
-"checksum dos2unix 0.1.0 (git+https://github.com/stpettersens/rust-dos2unix.git)" = "<none>"
+"checksum dos2unix 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d30b0d1a3c29746b0e1dd15fd8c6ef90078de39fdd733f55ee461132c079f48f"
 "checksum filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)" = "5363ab8e4139b8568a6237db5248646e5a8a2f89bd5ccb02092182b11fd3e922"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "49247ec2a285bb3dcb23cbd9c35193c025e7251bfce77c1d5da97e6362dffe7f"
