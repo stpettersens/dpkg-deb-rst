@@ -4,7 +4,7 @@ version = "0.1.0"
 dependencies = [
  "Inflector 0.4.0 (git+https://github.com/stpettersens/inflector.git?branch=Train-Case)",
  "ark 0.1.0 (git+https://github.com/stpettersens/ark.git)",
- "clioptions 0.1.0 (git+https://github.com/stpettersens/clioptions.git)",
+ "clioptions 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dos2unix 0.1.0 (git+https://github.com/stpettersens/rust-dos2unix.git)",
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -39,7 +39,7 @@ dependencies = [
 [[package]]
 name = "clioptions"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/clioptions.git#140d7408d8cd757684575c49fea3d8e1684d21b0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "dos2unix"
@@ -148,7 +148,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum Inflector 0.4.0 (git+https://github.com/stpettersens/inflector.git?branch=Train-Case)" = "<none>"
 "checksum aho-corasick 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)" = "ca972c2ea5f742bfce5687b9aef75506a764f61d37f8f649047846a9686ddb66"
 "checksum ark 0.1.0 (git+https://github.com/stpettersens/ark.git)" = "<none>"
-"checksum clioptions 0.1.0 (git+https://github.com/stpettersens/clioptions.git)" = "<none>"
+"checksum clioptions 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f5fd8e2ad4a0873b937bc7a249b4141c33ef9a50f93b1fc1c08844cd52b7b087"
 "checksum dos2unix 0.1.0 (git+https://github.com/stpettersens/rust-dos2unix.git)" = "<none>"
 "checksum filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)" = "5363ab8e4139b8568a6237db5248646e5a8a2f89bd5ccb02092182b11fd3e922"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
