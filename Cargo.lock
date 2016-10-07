@@ -2,7 +2,7 @@
 name = "dpkg-deb-rst"
 version = "0.1.0"
 dependencies = [
- "Inflector 0.4.0 (git+https://github.com/stpettersens/inflector.git?branch=Train-Case)",
+ "Inflector 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "ark 0.1.0 (git+https://github.com/stpettersens/ark.git)",
  "clioptions 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dos2unix 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -13,8 +13,8 @@ dependencies = [
 
 [[package]]
 name = "Inflector"
-version = "0.4.0"
-source = "git+https://github.com/stpettersens/inflector.git?branch=Train-Case#f9650222feaf2642286b59101428127bf42b7ead"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -145,7 +145,7 @@ version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
-"checksum Inflector 0.4.0 (git+https://github.com/stpettersens/inflector.git?branch=Train-Case)" = "<none>"
+"checksum Inflector 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "cf55f4ea728492fd6a529d46192fb09374eccff27c5bc23aba0957f31b8e3c21"
 "checksum aho-corasick 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)" = "ca972c2ea5f742bfce5687b9aef75506a764f61d37f8f649047846a9686ddb66"
 "checksum ark 0.1.0 (git+https://github.com/stpettersens/ark.git)" = "<none>"
 "checksum clioptions 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f5fd8e2ad4a0873b937bc7a249b4141c33ef9a50f93b1fc1c08844cd52b7b087"
