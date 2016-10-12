@@ -1,7 +1,11 @@
 [package]
 name = "dpkg-deb-rst"
+description = "dpkg-deb implementation in Rust."
 version = "0.1.0"
 authors = ["Sam Saint-Pettersen <s.stpettersen+github@gmail.com>"]
+repository = "https://github.com/stpettersens/dpkg-deb-rst"
+homepage = "https://github.com/stpettersens/dpkg-deb-rst"
+license = "GPL-3.0/MIT"
 
 [dependencies]
 ark = { git = "https://github.com/stpettersens/ark.git" }
