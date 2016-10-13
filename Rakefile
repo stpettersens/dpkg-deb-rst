@@ -28,3 +28,7 @@ task :clean do
     FileUtils.rm_rf(pkg)
     FileUtils.rm_rf("target")
 end
+
+task :cleanlock do
+    File.delete("Cargo.lock")
+end

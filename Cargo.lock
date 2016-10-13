@@ -31,7 +31,7 @@ dependencies = [
 [[package]]
 name = "ark"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/ark.git#ac7422d57e08f331d7a79e23039013eaa2c0ee3f"
+source = "git+https://github.com/stpettersens/ark.git#c54b34ce356a0024557f3a26861037c0398c8a42"
 dependencies = [
  "filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -106,7 +106,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "tatar"
 version = "0.1.0"
-source = "git+https://github.com/stpettersens/tatar.git#f5b6769949c2b13cec1e517cc4b1886262a00640"
+source = "git+https://github.com/stpettersens/tatar.git#486177329f892b01d42503f1439a9921bb9dc533"
 dependencies = [
  "filetime 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.77 (registry+https://github.com/rust-lang/crates.io-index)",
