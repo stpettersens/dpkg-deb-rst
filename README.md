@@ -9,13 +9,16 @@
 ##### Usage:
 
 ```
-Usage: dpkg-deb-rst [<option> ...] <command>
-
-Standard commands:
-  -b|--build <directory> [<deb>]  Build an archive.
-  -c|--contents <deb>             List contents.
-  -I|--info <deb>                 Show info to stdout.
-
-Extended commands:
-  -s|--stage <pkg.json>           Stage package structure from JSON file.
-  -b|--build <pkg.json>  [<deb>]  Build an archive from JSON file.
+Usage: dpkg-deb-rst [<option> ...] <command>                                                          
+                                                                                                                         
+Standard commands:                                                                                                       
+  -b|--build <directory> [<deb>]  Build an archive.                                                                      
+  -c|--contents <deb>             List contents.                                                                         
+  -I|--info <deb>                 Show info to stdout.                                                                   
+                                                                                                                         
+Extended commands:                                                                                                       
+  -s|--stage <pkg.json>           Stage package structure from JSON pkg file.                                            
+  -s|--stage <pkg.toml>           Stage package structure from TOML pkg file.                                            
+  -b|--build <pkg.json>  [<deb>]  Build an archive from JSON pkg file.                                                   
+  -b|--build <pkg.toml>  [<deb>]  Build an archive from TOML pkg file.      
+```
