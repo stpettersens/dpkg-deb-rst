@@ -13,6 +13,7 @@ use dos2unix::Dos2Unix;
 use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
+use toml;
 use inflector::Inflector;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::fs;
@@ -23,7 +24,7 @@ use std::process::exit;
 
 static DELIMITER: char = '_';
 
-#[derive(Clone, RustcDecodable, RustcEncodable)]
+#[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
 struct Package {
     package: String,
     version: String,
@@ -184,16 +185,42 @@ pub fn view_info_archive(deb: &str) {
 }
 
 pub fn generate_debian_staging_void(json: &str) {
-    generate_debian_staging(json, true);
+    generate_debian_staging_from_json(json, true);
 }
 
-pub fn generate_debian_staging(json: &str, verbose: bool) -> String {
+pub fn generate_debian_staging_from_toml(tomlf: &str, verbose: bool) -> String {
+    let mut lines = String::new();
+    let mut file = File::open(tomlf).unwrap();
+    let _ = file.read_to_string(&mut lines);
+    let ptoml = toml::Parser::new(&lines).parse().unwrap();
+    let values = ptoml.get("package").unwrap();
+    let files = values.as_table().unwrap().get("_files").unwrap();
+    println!("{:?}", files);
+    let pkg = Package {
+        package: values.as_table().unwrap().get("name").unwrap().as_str().unwrap().to_owned(),
+        version: values.as_table().unwrap().get("version").unwrap().as_str().unwrap().to_owned(),
+        section: values.as_table().unwrap().get("section").unwrap().as_str().unwrap().to_owned(),
+        priority: values.as_table().unwrap().get("priority").unwrap().as_str().unwrap().to_owned(),
+        architecture: values.as_table().unwrap().get("architecture").unwrap().as_str().unwrap().to_owned(),
+        installed_size: values.as_table().unwrap().get("installed_size").unwrap().as_str().unwrap().to_owned(),
+        maintainer: values.as_table().unwrap().get("maintainer").unwrap().as_str().unwrap().to_owned(),
+        description: values.as_table().unwrap().get("architecture").unwrap().as_str().unwrap().to_owned(),
+        _files: Vec::new(),
+    };
+    println!("{:#?}", pkg);
+    String::new()
+}
+
+pub fn generate_debian_staging_from_json(json: &str, verbose: bool) -> String {
     let mut lines = String::new();
     let mut file = File::open(json).unwrap();
     let _ = file.read_to_string(&mut lines);
     let manifest = Json::from_str(&lines).unwrap();
     let pkg: Package = json::decode(&manifest.to_string()).unwrap();
+    generate_common_debian_staging(pkg, verbose)
+}
 
+fn generate_common_debian_staging(pkg: Package, verbose: bool) -> String {
     if pkg.package.is_empty() || pkg.version.is_empty() || pkg._files[0].is_empty() {
         println!("At least package name, version and _files must be defined.");
         exit(2);

@@ -14,6 +14,7 @@ extern crate ark;
 extern crate dos2unix;
 extern crate regex;
 extern crate rustc_serialize;
+extern crate toml;
 extern crate inflector;
 use clioptions::CliOptions;
 use regex::Regex;
@@ -31,8 +32,10 @@ fn display_usage(program: &str, code: i32) {
     println!("  -c|--contents <deb>             List contents.");
     println!("  -I|--info <deb>                 Show info to stdout.");
     println!("\nExtended commands:");
-    println!("  -s|--stage <pkg.json>           Stage package structure from JSON file.");
-    println!("  -b|--build <pkg.json>  [<deb>]  Build an archive from JSON file.\n");
+    println!("  -s|--stage <pkg.json>           Stage package structure from JSON pkg file.");
+    println!("  -s|--stage <pkg.toml>           Stage package structure from TOML pkg file.");
+    println!("  -b|--build <pkg.json>  [<deb>]  Build an archive from JSON pkg file.");
+    println!("  -b|--build <pkg.toml>  [<deb>]  Build an archive from TOML pkg file.\n");
     exit(code);
 }
 
@@ -50,11 +53,15 @@ fn main() {
                     if !src.is_empty() {
                         let json = Regex::new(r".json$").unwrap();
                         if json.is_match(&src) {
-                            src = dpkgdeb::generate_debian_staging(&src, false);
+                            src = dpkgdeb::generate_debian_staging_from_json(&src, false);
                         }
-                        dpkgdeb::build_debian_archive(&src, &pn, true);
+                        let toml = Regex::new(r".t(o)*ml$").unwrap();
+                        if toml.is_match(&src) {
+                            src = dpkgdeb::generate_debian_staging_from_toml(&src, false);
+                        }
+                        // dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
-                        display_error(&program, "--build needs a <directory/pkg.json> argument");
+                        display_error(&program, "--build needs a <directory/pkg.{json|toml}> argument");
                     }
                 },
                 "-c" | "--contents" => dpkgdeb::view_contents_archive(&cli.next_argument(i)),
