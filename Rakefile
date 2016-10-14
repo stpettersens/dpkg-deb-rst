@@ -1,7 +1,8 @@
 require 'os'
 require 'fileutils'
 
-pkg = "demo_from_json_0.1-1"
+pkgs = [ "demo_from_json_0.1-1", "demo_from_toml_0.1-1" ]
+exts = [ "json", "toml" ]
 
 task :default do
     sh "cargo build --release"
@@ -11,21 +12,26 @@ task :test do
     puts
     sh "target/release/dpkg-deb-rst --build demo_0.1-1"
     puts
-    sh "target/release/dpkg-deb-rst --build demo_0.1-1.json"
-    puts
-    if OS.windows? then
-        sh "tree /F #{pkg}"
-        sh "type #{pkg}\\DEBIAN\\control"
-    else
-        sh "tree #{pkg}"
-        sh "cat #{pkg}/DEBIAN/control"
+    for i in 0..pkgs.size - 1 do
+        sh "target/release/dpkg-deb-rst --build demo_0.1-1.#{exts[i]}"
+        puts
+        if OS.windows? then
+            sh "tree /F #{pkgs[i]}"
+            sh "type #{pkgs[i]}\\DEBIAN\\control"
+        else
+            sh "tree #{pkgs[i]}"
+            sh "cat #{pkgs[i]}/DEBIAN/control"
+        end
+        puts
     end
 end
 
 task :clean do
     File.delete("control.tar.gz")
     File.delete("debian-binary")
-    FileUtils.rm_rf(pkg)
+    for i in 0..pkgs.size - 1 do
+        FileUtils.rm_rf(pkgs[i])
+    end
     FileUtils.rm_rf("target")
 end
 

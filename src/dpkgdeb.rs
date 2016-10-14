@@ -126,7 +126,7 @@ fn create_ctrl_vector(ctrls: String) -> Vec<String> {
         let split = c.split(":");
         let kv: Vec<&str> = split.collect();
         ctrl.push(format!("{}: {}",
-        &kv[0][1..kv[0].len() - 1].to_string().to_train_case(), 
+        &kv[0][1..kv[0].len() - 1].to_string().to_train_case(),
         &kv[1][1..kv[1].len() - 1]));
     }
     ctrl[0] = format!("{}{}", &ctrl[0][1..2].to_uppercase(), &ctrl[0][2..ctrl[0].len()]);
@@ -195,7 +195,11 @@ pub fn generate_debian_staging_from_toml(tomlf: &str, verbose: bool) -> String {
     let ptoml = toml::Parser::new(&lines).parse().unwrap();
     let values = ptoml.get("package").unwrap();
     let files = values.as_table().unwrap().get("_files").unwrap();
-    println!("{:?}", files);
+    let fv = files.as_slice().unwrap().to_vec();
+    let mut files = Vec::new();
+    for f in fv {
+        files.push(format!("{}", f));
+    }
     let pkg = Package {
         package: values.as_table().unwrap().get("name").unwrap().as_str().unwrap().to_owned(),
         version: values.as_table().unwrap().get("version").unwrap().as_str().unwrap().to_owned(),
@@ -204,11 +208,10 @@ pub fn generate_debian_staging_from_toml(tomlf: &str, verbose: bool) -> String {
         architecture: values.as_table().unwrap().get("architecture").unwrap().as_str().unwrap().to_owned(),
         installed_size: values.as_table().unwrap().get("installed_size").unwrap().as_str().unwrap().to_owned(),
         maintainer: values.as_table().unwrap().get("maintainer").unwrap().as_str().unwrap().to_owned(),
-        description: values.as_table().unwrap().get("architecture").unwrap().as_str().unwrap().to_owned(),
-        _files: Vec::new(),
+        description: values.as_table().unwrap().get("description").unwrap().as_str().unwrap().to_owned(),
+        _files: files,
     };
-    println!("{:#?}", pkg);
-    String::new()
+    generate_common_debian_staging(pkg, true, verbose)
 }
 
 pub fn generate_debian_staging_from_json(json: &str, verbose: bool) -> String {
@@ -217,10 +220,10 @@ pub fn generate_debian_staging_from_json(json: &str, verbose: bool) -> String {
     let _ = file.read_to_string(&mut lines);
     let manifest = Json::from_str(&lines).unwrap();
     let pkg: Package = json::decode(&manifest.to_string()).unwrap();
-    generate_common_debian_staging(pkg, verbose)
+    generate_common_debian_staging(pkg, false, verbose)
 }
 
-fn generate_common_debian_staging(pkg: Package, verbose: bool) -> String {
+fn generate_common_debian_staging(pkg: Package, is_toml: bool, verbose: bool) -> String {
     if pkg.package.is_empty() || pkg.version.is_empty() || pkg._files[0].is_empty() {
         println!("At least package name, version and _files must be defined.");
         exit(2);
@@ -262,11 +265,24 @@ fn generate_common_debian_staging(pkg: Package, verbose: bool) -> String {
     }
 
     for i in 0..inn.len() {
-        let _ = fs::copy(inn[i].clone(), out[i].clone());
+        let innn = inn[i].clone();
+        let outt = out[i].clone();
+        if is_toml {
+            let i = format!("{}", &innn[1..innn.len()]);
+            let o = format!("{}", &outt[0..outt.len() - 1]);
+            let _ = fs::copy(i, o);
+        } else {
+            let _ = fs::copy(innn, outt);
+        }
     }
 
     for o in out {
-        Dos2Unix::convert(&o, false);
+        if is_toml {
+            let out = format!("{}", &o[0..o.len() - 1]);
+            Dos2Unix::convert(&out, false);
+        } else {
+            Dos2Unix::convert(&o, false);
+        }
     }
 
     thread::sleep_ms(3000);

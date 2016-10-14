@@ -59,7 +59,7 @@ fn main() {
                         if toml.is_match(&src) {
                             src = dpkgdeb::generate_debian_staging_from_toml(&src, false);
                         }
-                        // dpkgdeb::build_debian_archive(&src, &pn, true);
+                        dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
                         display_error(&program, "--build needs a <directory/pkg.{json|toml}> argument");
                     }
