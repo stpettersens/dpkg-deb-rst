@@ -14,12 +14,15 @@ use regex::Regex;
 use rustc_serialize::json;
 use rustc_serialize::json::Json;
 use toml;
+use yaml_rust::YamlLoader;
+use xmlJSON::XmlDocument;
 use inflector::Inflector;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::fs;
 use std::fs::File;
 use std::path::Path;
 use std::thread;
+use std::str::FromStr;
 use std::process::exit;
 
 static DELIMITER: char = '_';
@@ -212,6 +215,37 @@ pub fn generate_debian_staging_from_toml(tomlf: &str, verbose: bool) -> String {
         _files: files,
     };
     generate_common_debian_staging(pkg, true, verbose)
+}
+
+pub fn generate_debian_staging_from_yaml(yaml: &str, verbose: bool) -> String {
+    let mut lines = String::new();
+    let mut file = File::open(yaml).unwrap();
+    let _ = file.read_to_string(&mut lines);
+    let docs = YamlLoader::load_from_str(&lines).unwrap();
+    let doc = &docs[0];
+    let fv = doc["_files"].as_vec().unwrap();
+    let mut files = Vec::new();
+    for f in fv {
+        files.push(format!("{}", f.as_str().unwrap()));
+    }
+    let pkg = Package {
+        package: doc["package"].as_str().unwrap().to_owned(),
+        version: doc["version"].as_str().unwrap().to_owned(),
+        section: doc["section"].as_str().unwrap().to_owned(),
+        priority: doc["priority"].as_str().unwrap().to_owned(),
+        architecture: doc["architecture"].as_str().unwrap().to_owned(),
+        installed_size: doc["installed_size"].as_str().unwrap().to_owned(),
+        maintainer: doc["maintainer"].as_str().unwrap().to_owned(),
+        description: doc["description"].as_str().unwrap().to_owned(),
+        _files: files,
+    };
+    generate_common_debian_staging(pkg, false, verbose)
+}
+
+pub fn generate_debian_staging_from_xml(xml: &str, verbose: bool) -> String {
+    let data = XmlDocument::from_str(&xml);
+    println!("{:?}", data);
+    String::new()
 }
 
 pub fn generate_debian_staging_from_json(json: &str, verbose: bool) -> String {

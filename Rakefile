@@ -1,14 +1,16 @@
 require 'os'
 require 'fileutils'
 
-pkgs = [ "demo_from_json_0.1-1", "demo_from_toml_0.1-1" ]
-exts = [ "json", "toml" ]
+pkgs = [ "demo_from_json_0.1-1", "demo_from_toml_0.1-1", "demo_from_yaml_0.1-1" ]
+exts = [ "json", "toml", "yaml" ]
 
 task :default do
     sh "cargo build --release"
 end
 
 task :test do
+    puts
+    sh "target/release/dpkg-deb-rst --help"
     puts
     sh "target/release/dpkg-deb-rst --build demo_0.1-1"
     puts

@@ -15,6 +15,8 @@ extern crate dos2unix;
 extern crate regex;
 extern crate rustc_serialize;
 extern crate toml;
+extern crate yaml_rust;
+extern crate xmlJSON;
 extern crate inflector;
 use clioptions::CliOptions;
 use regex::Regex;
@@ -34,8 +36,10 @@ fn display_usage(program: &str, code: i32) {
     println!("\nExtended commands:");
     println!("  -s|--stage <pkg.json>           Stage package structure from JSON pkg file.");
     println!("  -s|--stage <pkg.toml>           Stage package structure from TOML pkg file.");
+    println!("  -s|--stage <pkg.yaml>           Stage package structure from YAML pkg file.");
     println!("  -b|--build <pkg.json>  [<deb>]  Build an archive from JSON pkg file.");
-    println!("  -b|--build <pkg.toml>  [<deb>]  Build an archive from TOML pkg file.\n");
+    println!("  -b|--build <pkg.toml>  [<deb>]  Build an archive from TOML pkg file.");
+    println!("  -b|--build <pkg.yaml>  [<deb>]  Build an archive from YAML pkg file.\n");
     exit(code);
 }
 
@@ -59,9 +63,17 @@ fn main() {
                         if toml.is_match(&src) {
                             src = dpkgdeb::generate_debian_staging_from_toml(&src, false);
                         }
+                        let yaml = Regex::new(r".y(a)*ml$").unwrap();
+                        if yaml.is_match(&src) {
+                            src = dpkgdeb::generate_debian_staging_from_yaml(&src, false);
+                        }
+                        let xml = Regex::new(r".xml$").unwrap();
+                        if xml.is_match(&src) {
+                            src = dpkgdeb::generate_debian_staging_from_xml(&src, false);
+                        }
                         dpkgdeb::build_debian_archive(&src, &pn, true);
                     } else {
-                        display_error(&program, "--build needs a <directory/pkg.{json|toml}> argument");
+                        display_error(&program, "--build needs a <directory/pkg.{json|toml|yaml}> argument");
                     }
                 },
                 "-c" | "--contents" => dpkgdeb::view_contents_archive(&cli.next_argument(i)),

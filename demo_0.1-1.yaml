@@ -1,0 +1,11 @@
+package: demo_from_yaml
+version: 0.1-1
+section: base
+priority: optional
+architecture: all
+installed_size: "`du -ks opt|cut -f 1`"
+maintainer: Mr.Apt <apt@nowhere.tld>
+description: A dummy package
+_files:
+    - demo_0.1-1/opt/demo/demo:opt/demo/demo
+    - demo_0.1-1/opt/demo/readme.txt:opt/demo/readme.txt
