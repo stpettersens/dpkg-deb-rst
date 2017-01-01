@@ -34,6 +34,9 @@ task :clean do
     for i in 0..pkgs.size - 1 do
         FileUtils.rm_rf(pkgs[i])
     end
+end
+
+task :cleanall => [:clean] do
     FileUtils.rm_rf("target")
 end
 
