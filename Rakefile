@@ -1,6 +1,8 @@
 require 'os'
 require 'fileutils'
 
+target = "dpkg-deb-rst"
+rtarget = "target/release/#{target}"
 pkgs = [ "demo_from_json_0.1-1", "demo_from_toml_0.1-1", "demo_from_yaml_0.1-1" ]
 exts = [ "json", "toml", "yaml" ]
 
@@ -8,14 +10,18 @@ task :default do
     sh "cargo build --release"
 end
 
+task :upx => [:default] do
+	sh "upx -9 #{rtarget} -o #{target}"
+end
+
 task :test do
     puts
-    sh "target/release/dpkg-deb-rst --help"
+    sh "#{rtarget} --help"
     puts
-    sh "target/release/dpkg-deb-rst --build demo_0.1-1"
+    sh "#{rtarget} --build demo_0.1-1"
     puts
     for i in 0..pkgs.size - 1 do
-        sh "target/release/dpkg-deb-rst --build demo_0.1-1.#{exts[i]}"
+        sh "#{rtarget} --build demo_0.1-1.#{exts[i]}"
         puts
         if OS.windows? then
             sh "tree /F #{pkgs[i]}"
@@ -37,7 +43,7 @@ task :clean do
 end
 
 task :cleanall => [:clean] do
-    FileUtils.rm_rf("target")
+    sh "cargo clean"
 end
 
 task :cleanlock do
