@@ -11,8 +11,6 @@ use tatar::Tatar;
 use ark::Ark;
 use dos2unix::Dos2Unix;
 use regex::Regex;
-use rustc_serialize::json;
-use rustc_serialize::json::Json;
 use toml;
 use yaml_rust::YamlLoader;
 use xmlJSON::XmlDocument;
@@ -27,7 +25,7 @@ use std::process::exit;
 
 static DELIMITER: char = '_';
 
-#[derive(Debug, Clone, RustcDecodable, RustcEncodable)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 struct Package {
     package: String,
     version: String,
@@ -249,11 +247,12 @@ pub fn generate_debian_staging_from_xml(xml: &str, verbose: bool) -> String {
 }
 
 pub fn generate_debian_staging_from_json(json: &str, verbose: bool) -> String {
-    let mut lines = String::new();
+    let mut manifest = String::new();
     let mut file = File::open(json).unwrap();
-    let _ = file.read_to_string(&mut lines);
-    let manifest = Json::from_str(&lines).unwrap();
-    let pkg: Package = json::decode(&manifest.to_string()).unwrap();
+    let _ = file.read_to_string(&mut manifest);
+    /*let manifest = Json::from_str(&lines).unwrap();
+    let pkg: Package = json::decode(&manifest.to_string()).unwrap();*/
+    let pkg: Package = serde_json::from_str(&manifest).unwrap();
     generate_common_debian_staging(pkg, false, verbose)
 }
 
