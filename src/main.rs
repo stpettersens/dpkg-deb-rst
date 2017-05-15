@@ -15,7 +15,7 @@ extern crate dos2unix;
 extern crate regex;
 extern crate serde;
 extern crate serde_json;
-#[use_macro]
+#[macro_use]
 extern crate serde_derive;
 extern crate toml;
 extern crate yaml_rust;
