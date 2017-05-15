@@ -12,6 +12,7 @@ use ark::Ark;
 use dos2unix::Dos2Unix;
 use regex::Regex;
 use toml;
+use serde_json;
 use yaml_rust::YamlLoader;
 use xmlJSON::XmlDocument;
 use inflector::Inflector;
@@ -270,7 +271,7 @@ fn generate_common_debian_staging(pkg: Package, is_toml: bool, verbose: bool) ->
     let dpath = format!("{}/DEBIAN", fpkg);
     let _ = fs::create_dir_all(dpath.clone());
 
-    let ctrl = create_ctrl_vector(json::encode(&pkg).unwrap());
+    let ctrl = create_ctrl_vector(serde_json::to_string(&pkg).unwrap());
     let mut w = File::create(format!("{}/control", dpath)).unwrap();
     let _ = w.write_all(ctrl.join("\n").as_bytes());
 
